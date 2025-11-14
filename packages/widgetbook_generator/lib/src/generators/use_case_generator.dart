@@ -1,8 +1,6 @@
-// ignore_for_file: deprecated_member_use analyzer(<8.0.0)
-
 import 'dart:convert';
 
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:path/path.dart' as path;
@@ -22,7 +20,7 @@ class UseCaseGenerator extends GeneratorForAnnotation<UseCase> {
 
   @override
   Future<String> generateForAnnotatedElement(
-    Element2 element,
+    Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
@@ -37,26 +35,33 @@ class UseCaseGenerator extends GeneratorForAnnotation<UseCase> {
     final type = annotation.read('type').typeValue;
     final designLink = annotation.readOrNull('designLink')?.stringValue;
     final path = annotation.readOrNull('path')?.stringValue;
-    final cloudExclude = annotation.read('cloudExclude').boolValue;
-    final knobsConfigs = annotation //
-        .readOrNull('cloudKnobsConfigs')
-        ?.parse(_parseKnobsConfigs);
+    final exclude = annotation.read('exclude').boolValue;
 
-    final componentName = type.getDisplayString()
-    // Generic widgets shouldn't have a "<dynamic>" suffix
-    // if no type parameter is specified.
-    .replaceAll('<dynamic>', '');
+    if (exclude) return '';
+
+    final cloudExclude = annotation.read('cloudExclude').boolValue;
+    final knobsConfigs =
+        annotation //
+            .readOrNull('cloudKnobsConfigs')
+            ?.parse(_parseKnobsConfigs);
+
+    final componentName = type
+        .getDisplayString()
+        // Generic widgets shouldn't have a "<dynamic>" suffix
+        // if no type parameter is specified.
+        .replaceAll('<dynamic>', '');
 
     final useCaseUri = resolveElementUri(element);
-    final componentUri = resolveElementUri(type.element3!);
+    final componentUri = resolveElementUri(type.element!);
 
-    final targetNavUri =
-        navPathMode == NavPathMode.component ? componentUri : useCaseUri;
+    final targetNavUri = navPathMode == NavPathMode.component
+        ? componentUri
+        : useCaseUri;
 
     final navPath = path ?? getNavPath(targetNavUri);
 
     final metadata = UseCaseMetadata(
-      functionName: element.firstFragment.name2!,
+      functionName: element.firstFragment.name!,
       designLink: designLink,
       name: name,
       importUri: useCaseUri,
@@ -89,10 +94,10 @@ class UseCaseGenerator extends GeneratorForAnnotation<UseCase> {
 
   /// Resolves the URI of an [element] by retrieving the URI from
   /// the [element]'s source.
-  String resolveElementUri(Element2 element) {
+  String resolveElementUri(Element element) {
     final source =
         element.firstFragment.libraryFragment?.source ??
-        element.library2!.firstFragment.source;
+        element.library!.firstFragment.source;
     return source.uri.toString();
   }
 
@@ -108,39 +113,38 @@ class UseCaseGenerator extends GeneratorForAnnotation<UseCase> {
 
     return {
       for (final entry in rawMap.entries)
-        entry.key:
-            entry.value.map(
-              (e) {
-                final reader = ConstantReader(e);
+        entry.key: entry.value.map(
+          (e) {
+            final reader = ConstantReader(e);
 
-                // A special type of KnobConfig is the MultiFieldKnobConfig
-                // This allows users to configure more than one field.
-                // Since for first-class knobs we have 1-1 relation between
-                // knob and field (i.e. each knob has only one field),
-                // we need to convert the MultiFieldKnobConfig into
-                // multiple KnobConfig (i.e. multiple fields).
-                if (e.type.toString() == '$MultiFieldKnobConfig') {
-                  final fields = reader.read('value').mapValue;
+            // A special type of KnobConfig is the MultiFieldKnobConfig
+            // This allows users to configure more than one field.
+            // Since for first-class knobs we have 1-1 relation between
+            // knob and field (i.e. each knob has only one field),
+            // we need to convert the MultiFieldKnobConfig into
+            // multiple KnobConfig (i.e. multiple fields).
+            if (e.type.toString() == '$MultiFieldKnobConfig') {
+              final fields = reader.read('value').mapValue;
 
-                  return fields.entries.map(
-                    // Add each field as a separate KnobConfig
-                    (entry) {
-                      return KnobConfig(
-                        entry.key!.toStringValue()!,
-                        entry.value?.toPrimitiveValue(),
-                      );
-                    },
-                  ).toList();
-                }
+              return fields.entries.map(
+                // Add each field as a separate KnobConfig
+                (entry) {
+                  return KnobConfig(
+                    entry.key!.toStringValue()!,
+                    entry.value?.toPrimitiveValue(),
+                  );
+                },
+              ).toList();
+            }
 
-                return [
-                  KnobConfig(
-                    reader.read('label').stringValue,
-                    reader.read('value').literalValue,
-                  ),
-                ];
-              },
-            ).flattened,
+            return [
+              KnobConfig(
+                reader.read('label').stringValue,
+                reader.read('value').literalValue,
+              ),
+            ];
+          },
+        ).flattened,
     };
   }
 }

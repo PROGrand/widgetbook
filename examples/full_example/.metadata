@@ -13,12 +13,12 @@ project_type: app
 migration:
   platforms:
     - platform: root
-      create_revision: 077b4a4ce10a07b82caa6897f0c626f9c0a3ac90
-      base_revision: 077b4a4ce10a07b82caa6897f0c626f9c0a3ac90
-    - platform: linux
-      create_revision: 077b4a4ce10a07b82caa6897f0c626f9c0a3ac90
-      base_revision: 077b4a4ce10a07b82caa6897f0c626f9c0a3ac90
+      create_revision: 35c388afb57ef061d06a39b537336c87e0e3d1b1
+      base_revision: 35c388afb57ef061d06a39b537336c87e0e3d1b1
     - platform: web
+      create_revision: 35c388afb57ef061d06a39b537336c87e0e3d1b1
+      base_revision: 35c388afb57ef061d06a39b537336c87e0e3d1b1
+    - platform: linux
       create_revision: 077b4a4ce10a07b82caa6897f0c626f9c0a3ac90
       base_revision: 077b4a4ce10a07b82caa6897f0c626f9c0a3ac90
     - platform: windows

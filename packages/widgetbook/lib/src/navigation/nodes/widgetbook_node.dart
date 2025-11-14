@@ -8,8 +8,7 @@ import 'nodes.dart';
 /// 3. [WidgetbookCategory]
 /// 4. [WidgetbookFolder]
 /// 5. [WidgetbookComponent]
-/// 6. [WidgetbookLeafComponent]
-/// 7. [WidgetbookUseCase]
+/// 6. [WidgetbookUseCase]
 abstract class WidgetbookNode {
   /// Creates a [WidgetbookNode].
   WidgetbookNode({
@@ -102,17 +101,16 @@ abstract class WidgetbookNode {
     if (predicate(this)) {
       return this;
     } else {
-      final filteredChildren =
-          children
-              ?.map((child) => child.filter(predicate))
-              .whereType<WidgetbookNode>()
-              .toList();
+      final filteredChildren = children
+          ?.map((child) => child.filter(predicate))
+          .whereType<WidgetbookNode>()
+          .toList();
 
       return filteredChildren == null || filteredChildren.isEmpty
           ? null
           : copyWith(
-            children: filteredChildren,
-          );
+              children: filteredChildren,
+            );
     }
   }
 

@@ -1,3 +1,20 @@
+## 3.20.0
+
+- **BREAKING**: Set minimum SDK version to 3.8.0. ([#1719](https://github.com/widgetbook/widgetbook/pull/1719))
+
+## 3.19.0
+
+- **FEAT**: Support `@UseCase.exclude` to exclude use-cases from the generated Widgetbook. ([#1676](https://github.com/widgetbook/widgetbook/pull/1676) - by [@EArminjon](https://github.com/EArminjon))
+
+## 3.18.0
+
+- **BREAKING**: Remove `next` builders. ([#1634](https://github.com/widgetbook/widgetbook/pull/1634))
+
+## 3.17.0
+
+- **BREAKING**: Require `analyzer` >=8.0.0, `build` >=4.0.0 and `source_gen` >=4.0.0. ([#1584](https://github.com/widgetbook/widgetbook/pull/1584))
+- **REFACTOR**: Generate `WidgetbookComponent`, instead of `WidgetbookLeafComponent`, for components with a single use-case. ([#1573](https://github.com/widgetbook/widgetbook/pull/1573))
+
 ## 3.16.0
 
 - **REFACTOR**: Allow `analyzer` 8.x. ([#1566](https://github.com/widgetbook/widgetbook/pull/1566))

@@ -8,6 +8,11 @@ import '../tree_root.dart';
 void main() {
   group('$NavigationPanel', () {
     const query = '1';
+    final leafComponentsCount = treeRoot
+        .findAll(
+          (node) => node is WidgetbookComponent && node.useCases.length == 1,
+        )
+        .length;
 
     testWidgets(
       'given a header is provided to NavigationPanel, '
@@ -15,11 +20,10 @@ void main() {
       (tester) async {
         await tester.pumpWidgetWithQueryParams(
           queryParams: {},
-          builder:
-              (_) => NavigationPanel(
-                root: treeRoot,
-                header: const Placeholder(),
-              ),
+          builder: (_) => NavigationPanel(
+            root: treeRoot,
+            header: const Placeholder(),
+          ),
         );
 
         expect(find.byType(Placeholder), findsOneWidget);
@@ -37,10 +41,9 @@ void main() {
       (tester) async {
         await tester.pumpWidgetWithQueryParams(
           queryParams: {},
-          builder:
-              (_) => NavigationPanel(
-                root: treeRoot,
-              ),
+          builder: (_) => NavigationPanel(
+            root: treeRoot,
+          ),
         );
 
         expect(find.byType(TextFormField), findsOneWidget);
@@ -53,10 +56,9 @@ void main() {
       (tester) async {
         await tester.pumpWidgetWithQueryParams(
           queryParams: {},
-          builder:
-              (_) => NavigationPanel(
-                root: treeRoot,
-              ),
+          builder: (_) => NavigationPanel(
+            root: treeRoot,
+          ),
         );
 
         await tester.findAndEnter(
@@ -66,7 +68,7 @@ void main() {
 
         expect(
           find.byType(NavigationTreeTile),
-          findsNWidgets(3),
+          findsNWidgets(2),
         );
       },
     );
@@ -77,10 +79,9 @@ void main() {
       (tester) async {
         await tester.pumpWidgetWithQueryParams(
           queryParams: {},
-          builder:
-              (_) => NavigationPanel(
-                root: treeRoot,
-              ),
+          builder: (_) => NavigationPanel(
+            root: treeRoot,
+          ),
         );
 
         await tester.findAndEnter(
@@ -94,7 +95,10 @@ void main() {
 
         expect(
           find.byType(NavigationTreeTile),
-          findsNWidgets(treeRoot.count - 1), // exclude root node
+          findsNWidgets(
+            // exclude root node and leaf components
+            treeRoot.count - 1 - leafComponentsCount,
+          ),
         );
       },
     );
@@ -105,10 +109,9 @@ void main() {
       (tester) async {
         await tester.pumpWidgetWithQueryParams(
           queryParams: {},
-          builder:
-              (_) => NavigationPanel(
-                root: treeRoot,
-              ),
+          builder: (_) => NavigationPanel(
+            root: treeRoot,
+          ),
         );
 
         await tester.findAndEnter(
@@ -118,7 +121,10 @@ void main() {
 
         expect(
           find.byType(NavigationTreeTile),
-          findsNWidgets(treeRoot.count - 1), // exclude root node
+          findsNWidgets(
+            // exclude root node and leaf components
+            treeRoot.count - 1 - leafComponentsCount,
+          ),
         );
       },
     );

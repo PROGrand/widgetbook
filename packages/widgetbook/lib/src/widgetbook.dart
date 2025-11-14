@@ -33,6 +33,8 @@ class Widgetbook extends StatefulWidget {
     this.themeMode,
     this.home = const DefaultHomePage(),
     this.header,
+    this.scrollBehavior,
+    this.enableLeafComponents = true,
   });
 
   /// A [Widgetbook] with [CupertinoApp] as an [appBuilder].
@@ -48,6 +50,8 @@ class Widgetbook extends StatefulWidget {
     this.themeMode,
     this.home = const DefaultHomePage(),
     this.header,
+    this.scrollBehavior,
+    this.enableLeafComponents = true,
   });
 
   /// A [Widgetbook] with [MaterialApp] as an [appBuilder].
@@ -63,6 +67,8 @@ class Widgetbook extends StatefulWidget {
     this.themeMode,
     this.home = const DefaultHomePage(),
     this.header,
+    this.scrollBehavior,
+    this.enableLeafComponents = true,
   });
 
   /// The initial route for that will be used on first startup.
@@ -114,6 +120,20 @@ class Widgetbook extends StatefulWidget {
   /// This can be used for branding or additional information.
   final Widget? header;
 
+  /// The [ScrollBehavior] to be applied to the Widgetbook application itself.
+  ///
+  /// This allows users to override the behavior of scrolling on both desktop
+  /// and web, where dragging by mouse is disabled by default.
+  ///
+  /// When null, defaults to [MaterialScrollBehavior].
+  ///
+  /// See also: https://docs.flutter.dev/release/breaking-changes/default-scroll-behavior-drag
+  final ScrollBehavior? scrollBehavior;
+
+  /// Enables or disables the visibility of leaf components in the Widgetbook UI.
+  /// By default, this is set to true.
+  final bool enableLeafComponents;
+
   @override
   State<Widgetbook> createState() => _WidgetbookState();
 }
@@ -132,6 +152,7 @@ class _WidgetbookState extends State<Widgetbook> {
       header: widget.header,
       addons: widget.addons,
       integrations: widget.integrations,
+      enableLeafComponents: widget.enableLeafComponents,
       root: WidgetbookRoot(
         children: widget.directories,
       ),
@@ -142,10 +163,9 @@ class _WidgetbookState extends State<Widgetbook> {
       // Do not use the initial route if there is an existing URL fragment.
       // That means that the user has navigated to a different route then
       // they restarted the app, so we should not override that.
-      uri:
-          Uri.base.fragment.isNotEmpty
-              ? Uri.parse(Uri.base.fragment)
-              : Uri.parse(widget.initialRoute),
+      uri: Uri.base.fragment.isNotEmpty
+          ? Uri.parse(Uri.base.fragment)
+          : Uri.parse(widget.initialRoute),
     );
 
     widget.integrations?.forEach(
@@ -164,6 +184,7 @@ class _WidgetbookState extends State<Widgetbook> {
         darkTheme: widget.darkTheme ?? Themes.dark,
         routerConfig: router,
         debugShowCheckedModeBanner: false,
+        scrollBehavior: widget.scrollBehavior,
       ),
     );
   }

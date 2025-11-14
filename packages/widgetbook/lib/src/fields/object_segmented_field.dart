@@ -13,13 +13,13 @@ class ObjectSegmentedField<T> extends Field<T> {
     this.labelBuilder = defaultLabelBuilder,
     @Deprecated('Fields should not be aware of their context') super.onChanged,
   }) : super(
+         defaultValue: values.first,
          type: FieldType.objectSegmented,
          codec: FieldCodec(
            toParam: labelBuilder,
-           toValue:
-               (param) => values.firstWhereOrNull(
-                 (value) => labelBuilder(value) == param,
-               ),
+           toValue: (param) => values.firstWhereOrNull(
+             (value) => labelBuilder(value) == param,
+           ),
          ),
        );
 
@@ -44,15 +44,14 @@ class ObjectSegmentedField<T> extends Field<T> {
           updateField(context, group, newValue.first);
         }
       },
-      segments:
-          values
-              .map(
-                (value) => ButtonSegment<T>(
-                  value: value,
-                  label: Text(labelBuilder(value)),
-                ),
-              )
-              .toList(),
+      segments: values
+          .map(
+            (value) => ButtonSegment<T>(
+              value: value,
+              label: Text(labelBuilder(value)),
+            ),
+          )
+          .toList(),
     );
   }
 

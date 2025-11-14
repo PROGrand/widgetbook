@@ -45,36 +45,34 @@ abstract class FieldsComposable<T> {
   Widget buildFields(BuildContext context) {
     final child = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-          fields
-              .map(
-                (field) => Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4.0,
-                  ),
-                  child: field.build(context, groupName),
-                ),
-              )
-              .toList(),
+      children: fields
+          .map(
+            (field) => Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 4.0,
+              ),
+              child: field.build(context, groupName),
+            ),
+          )
+          .toList(),
     );
 
     return !isNullable
         ? Setting(
-          name: name,
-          description: description,
-          child: child,
-        )
+            name: name,
+            description: description,
+            child: child,
+          )
         : NullableSetting(
-          name: name,
-          description: description,
-          isNullified: isNullified(context),
-          onNullified:
-              (isNullified) => toggleNullification(
-                context,
-                nullify: isNullified,
-              ),
-          child: child,
-        );
+            name: name,
+            description: description,
+            isNullified: isNullified(context),
+            onNullified: (isNullified) => toggleNullification(
+              context,
+              nullify: isNullified,
+            ),
+            child: child,
+          );
   }
 
   /// Decodes the value of the [Field] with [name] from the query [group]
@@ -129,6 +127,21 @@ abstract class FieldsComposable<T> {
     );
 
     fields.forEach((field) {
+      // If the field is not present in the `groupMap`, we set it to its
+      // initial value or default value.
+      //
+      // This is used when user first interacts with a nullable field.
+      if (!groupMap.containsKey(field.name)) {
+        final value =
+            field.initialValueStringified ?? field.defaultValueStringified;
+        state.updateQueryField(
+          group: groupName,
+          field: field.name,
+          value: nullify ? '${Field.nullabilitySymbol}${value}' : value,
+        );
+        return;
+      }
+
       final value = groupMap[field.name];
       if (value == null) return;
 

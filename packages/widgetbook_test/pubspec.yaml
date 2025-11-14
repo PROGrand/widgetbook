@@ -1,6 +1,6 @@
 name: widgetbook_test
 description: A placeholder for future use. The package will be used to support Golden Tests with Widgetbook.
-version: 0.0.0
+version: 3.0.0
 homepage: https://www.widgetbook.io?utm_source=pub.dev&utm_medium=link&utm_campaign=widgetbook_test
 repository: https://github.com/widgetbook/widgetbook/tree/main/packages/widgetbook_test
 issue_tracker: https://github.com/widgetbook/widgetbook/issues
@@ -9,10 +9,10 @@ topics: [widgetbook, storybook, ui, test, golden-test]
 
 screenshots:
   - description: Widgetbook Logo
-    path: assets/logo.png
+    path: assets/logo.webp
 
 environment:
-  sdk: ">=3.7.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
 
 dev_dependencies:
   test: ^1.24.1

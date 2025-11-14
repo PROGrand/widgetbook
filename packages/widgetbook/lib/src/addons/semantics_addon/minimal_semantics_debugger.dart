@@ -119,7 +119,7 @@ class _MinimalSemanticsDebuggerState extends State<MinimalSemanticsDebugger>
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      foregroundPainter: _SemanticsDebuggerPainter(
+      foregroundPainter: SemanticsDebuggerPainter(
         _pipelineOwner!,
         _generation,
         View.of(context).devicePixelRatio,
@@ -133,8 +133,9 @@ class _MinimalSemanticsDebuggerState extends State<MinimalSemanticsDebugger>
   }
 }
 
-class _SemanticsDebuggerPainter extends CustomPainter {
-  const _SemanticsDebuggerPainter(
+@internal
+class SemanticsDebuggerPainter extends CustomPainter {
+  const SemanticsDebuggerPainter(
     this.owner,
     this.generation,
     this.devicePixelRatio,
@@ -165,7 +166,6 @@ class _SemanticsDebuggerPainter extends CustomPainter {
     final rootNode = _rootSemanticsNode;
 
     canvas.save();
-    canvas.scale(1.0 / devicePixelRatio, 1.0 / devicePixelRatio);
 
     if (rootNode != null) {
       _paint(canvas, rootNode, _findDepth(rootNode), 0, 0);
@@ -175,7 +175,7 @@ class _SemanticsDebuggerPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_SemanticsDebuggerPainter oldDelegate) {
+  bool shouldRepaint(SemanticsDebuggerPainter oldDelegate) {
     return owner != oldDelegate.owner || generation != oldDelegate.generation;
   }
 
@@ -191,6 +191,15 @@ class _SemanticsDebuggerPainter extends CustomPainter {
       annotations.add(
         // ignore: deprecated_member_use flutter(<3.35.0)
         data.hasFlag(SemanticsFlag.isChecked) ? 'checked' : 'unchecked',
+      );
+      wantsTap = true;
+    }
+
+    // ignore: deprecated_member_use flutter(<3.35.0)
+    if (data.hasFlag(SemanticsFlag.hasSelectedState)) {
+      annotations.add(
+        // ignore: deprecated_member_use flutter(<3.35.0)
+        data.hasFlag(SemanticsFlag.isSelected) ? 'selected' : 'unselected',
       );
       wantsTap = true;
     }
@@ -277,14 +286,12 @@ class _SemanticsDebuggerPainter extends CustomPainter {
     final rect = node.rect;
     canvas.save();
     canvas.clipRect(rect);
-    final textPainter =
-        TextPainter()
-          ..text = TextSpan(style: labelStyle, text: message)
-          ..textDirection =
-              TextDirection
-                  .ltr // _getMessage always returns LTR text, even if node.label is RTL
-          ..textAlign = TextAlign.center
-          ..layout(maxWidth: rect.width);
+    final textPainter = TextPainter()
+      ..text = TextSpan(style: labelStyle, text: message)
+      ..textDirection = TextDirection
+          .ltr // _getMessage always returns LTR text, even if node.label is RTL
+      ..textAlign = TextAlign.center
+      ..layout(maxWidth: rect.width);
 
     textPainter.paint(
       canvas,
@@ -323,22 +330,19 @@ class _SemanticsDebuggerPainter extends CustomPainter {
       final lineColor = _colorForNode(indexInParent, level);
       final innerRect = rect.deflate(rank * 1.0);
       if (innerRect.isEmpty) {
-        final fill =
-            Paint()
-              ..color = lineColor
-              ..style = PaintingStyle.fill;
+        final fill = Paint()
+          ..color = lineColor
+          ..style = PaintingStyle.fill;
         canvas.drawRect(rect, fill);
       } else {
-        final fill =
-            Paint()
-              ..color = const Color(0xFFFFFFFF)
-              ..style = PaintingStyle.fill;
+        final fill = Paint()
+          ..color = const Color(0xFFFFFFFF)
+          ..style = PaintingStyle.fill;
         canvas.drawRect(rect, fill);
-        final line =
-            Paint()
-              ..strokeWidth = rank * 2.0
-              ..color = lineColor
-              ..style = PaintingStyle.stroke;
+        final line = Paint()
+          ..strokeWidth = rank * 2.0
+          ..color = lineColor
+          ..style = PaintingStyle.stroke;
         canvas.drawRect(innerRect, line);
       }
       _paintMessage(canvas, node);

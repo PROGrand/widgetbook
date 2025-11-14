@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -30,6 +32,7 @@ class NavigationPanel extends StatefulWidget {
 }
 
 class _NavigationPanelState extends State<NavigationPanel> {
+  Timer? _debounce;
   WidgetbookNode? selectedNode;
 
   bool filterNode(WidgetbookNode node, String query) {
@@ -42,20 +45,23 @@ class _NavigationPanelState extends State<NavigationPanel> {
   @override
   void initState() {
     super.initState();
-    selectedNode =
-        widget.initialPath != null
-            ? widget.root.find((child) => child.path == widget.initialPath)
-            : null;
+    selectedNode = widget.initialPath != null
+        ? widget.root.find((child) => child.path == widget.initialPath)
+        : null;
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final query = WidgetbookState.of(context).query ?? '';
-    final filteredRoot =
-        query.isEmpty
-            ? widget.root
-            : widget.root.filter((node) => filterNode(node, query)) ??
-                widget.root;
+    final filteredRoot = query.isEmpty
+        ? widget.root
+        : widget.root.filter((node) => filterNode(node, query)) ?? widget.root;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -69,8 +75,14 @@ class _NavigationPanelState extends State<NavigationPanel> {
           padding: const EdgeInsets.all(16),
           child: SearchField(
             value: query,
-            onChanged: WidgetbookState.of(context).updateQuery,
             onCleared: () => WidgetbookState.of(context).updateQuery(''),
+            onChanged: (value) {
+              _debounce?.cancel();
+              _debounce = Timer(
+                const Duration(milliseconds: 100),
+                () => WidgetbookState.of(context).updateQuery(value),
+              );
+            },
           ),
         ),
         if (filteredRoot.children != null)
@@ -80,19 +92,22 @@ class _NavigationPanelState extends State<NavigationPanel> {
                 horizontal: 16,
               ),
               itemCount: filteredRoot.children!.length,
-              itemBuilder:
-                  (context, index) => NavigationTreeNode(
-                    node: filteredRoot.children![index],
-                    selectedNode: selectedNode,
-                    onNodeSelected: (node) {
-                      if (!node.isLeaf || node.path == selectedNode?.path) {
-                        return;
-                      }
+              itemBuilder: (context, index) => NavigationTreeNode(
+                key: ObjectKey(filteredRoot.children![index]),
+                node: filteredRoot.children![index],
+                selectedNode: selectedNode,
+                onNodeSelected: (node) {
+                  if (!node.isLeaf || node.path == selectedNode?.path) {
+                    return;
+                  }
 
-                      setState(() => selectedNode = node);
-                      widget.onNodeSelected?.call(node);
-                    },
-                  ),
+                  setState(() => selectedNode = node);
+                  widget.onNodeSelected?.call(node);
+                },
+                enableLeafComponents: WidgetbookState.of(
+                  context,
+                ).enableLeafComponents,
+              ),
             ),
           ),
         Padding(

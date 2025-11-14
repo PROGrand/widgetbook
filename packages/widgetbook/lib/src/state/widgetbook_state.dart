@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart'; // @docImport
-import 'package:flutter/material.dart';
+/// @docImport 'package:flutter/cupertino.dart';
+/// @docImport 'package:flutter/material.dart';
+library;
+
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 
-import '../../next.dart';
 import '../addons/addons.dart';
 import '../fields/fields.dart';
 import '../integrations/widgetbook_integration.dart';
@@ -78,6 +80,7 @@ class WidgetbookState extends ChangeNotifier {
     this.home = const DefaultHomePage(),
     this.panels = null,
     this.header,
+    this.enableLeafComponents = true,
   }) {
     this.knobs = KnobsRegistry(
       onLock: () {
@@ -139,6 +142,10 @@ class WidgetbookState extends ChangeNotifier {
   /// An optional widget to display at the top of the navigation panel.
   /// This can be used for branding or additional information.
   final Widget? header;
+
+  /// Whether leaf components are enabled in the navigation tree.
+  /// By default, this is set to true.
+  final bool enableLeafComponents;
 
   /// List of directories passed to the root node.
   List<WidgetbookNode> get directories => root.children!;
@@ -237,11 +244,12 @@ class WidgetbookState extends ChangeNotifier {
   }) {
     final groupMap = FieldCodec.decodeQueryGroup(queryParams[group]);
 
-    final newGroupMap = Map<String, String>.from(groupMap)..update(
-      field,
-      (_) => value,
-      ifAbsent: () => value,
-    );
+    final newGroupMap = Map<String, String>.from(groupMap)
+      ..update(
+        field,
+        (_) => value,
+        ifAbsent: () => value,
+      );
 
     updateQueryParam(
       group,
@@ -285,26 +293,15 @@ class WidgetbookState extends ChangeNotifier {
     query = routeConfig.query;
     previewMode = routeConfig.previewMode;
     queryParams = routeConfig.queryParams;
-    panels =
-        previewMode
-            ? null // Panels are ignored in preview mode
-            : routeConfig.panels
-                ?.map(LayoutPanel.values.byNameOrNull)
-                .nonNulls
-                .toSet();
+    panels = previewMode
+        ? null // Panels are ignored in preview mode
+        : routeConfig.panels
+              ?.map(LayoutPanel.values.byNameOrNull)
+              .nonNulls
+              .toSet();
 
     notifyListeners();
   }
-
-  /* Widgetbook Next: SAM (Story-Arg-Mode) Structure */
-
-  /// Returns `true` if SAM (Story-Arg-Mode) structure is used.
-  @experimental
-  bool get isNext => useCase is Story;
-
-  /// Returns the current active [Story].
-  @experimental
-  Story? get story => isNext ? useCase as Story : null;
 
   @override
   void dispose() {

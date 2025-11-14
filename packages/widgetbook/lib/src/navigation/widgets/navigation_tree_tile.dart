@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
-import '../../../next.dart' as next;
 import '../../widgetbook_theme.dart';
 import '../icons/icons.dart';
 import '../icons/resolve_icon.dart';
@@ -17,6 +16,7 @@ class NavigationTreeTile extends StatelessWidget {
     this.onTap,
     this.isExpanded = false,
     this.isSelected = false,
+    this.enableLeafComponents = true,
   });
 
   static const indentation = 24.0;
@@ -25,19 +25,23 @@ class NavigationTreeTile extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isExpanded;
   final bool isSelected;
+  final bool enableLeafComponents;
 
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(indentation);
+    final isLeafComponent =
+        enableLeafComponents &&
+        node is WidgetbookComponent &&
+        node.children?.length == 1;
 
     return Container(
       height: indentation,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        color:
-            isSelected
-                ? WidgetbookTheme.of(context).colorScheme.secondaryContainer
-                : null,
+        color: isSelected
+            ? WidgetbookTheme.of(context).colorScheme.secondaryContainer
+            : null,
       ),
       child: InkWell(
         onTap: onTap,
@@ -49,12 +53,11 @@ class NavigationTreeTile extends StatelessWidget {
             ),
             SizedBox(
               width: indentation,
-              child:
-                  node.isLeaf || node is WidgetbookLeafComponent
-                      ? null
-                      : ExpanderIcon(
-                        isExpanded: isExpanded,
-                      ),
+              child: node.isLeaf || isLeafComponent
+                  ? null
+                  : ExpanderIcon(
+                      isExpanded: isExpanded,
+                    ),
             ),
             SizedBox(
               width: indentation,
@@ -70,15 +73,6 @@ class NavigationTreeTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            if (node is next.Story ||
-                node is next.Component ||
-                node is next.LeafComponent) ...{
-              const Spacer(),
-              const next.ExperimentalBadge(),
-              const SizedBox(
-                width: 8,
-              ),
-            },
           ],
         ),
       ),

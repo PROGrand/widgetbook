@@ -1,6 +1,34 @@
-## Unreleased
+## 3.20.0
 
+- **BREAKING**: Set minimum SDK version to 3.8.0 & minimum Flutter version to 3.32.0. ([#1719](https://github.com/widgetbook/widgetbook/pull/1719))
+- **FEAT:** Support dynamic knobs. ([#1709](https://github.com/widgetbook/widgetbook/pull/1709) - by [@EArminjon](https://github.com/EArminjon))
+- **FEAT:** Expose `precision` parameter in `DoubleSliderField` and `knobs.double.slider`. The default value is currently `1`, to get the old behavior, set it to `null`. ([#1706](https://github.com/widgetbook/widgetbook/pull/1706) - by [@EArminjon](https://github.com/EArminjon))
+- **FIX:** Allow `IterableSegmentedField` to parse unknown values. ([#1703](https://github.com/widgetbook/widgetbook/pull/1703) - by [@EArminjon](https://github.com/EArminjon))
+
+## 3.19.0
+
+- **FEAT**: Add color picker to `ColorField`. ([#1659](https://github.com/widgetbook/widgetbook/pull/1659) - by [@EArminjon](https://github.com/EArminjon))
+- **FEAT**: Add `enableLeafComponent` parameter to `Widgetbook` to allow enabling/disabling leaf components (i.e. components with a single use-case) behavior. ([#1680](https://github.com/widgetbook/widgetbook/pull/1680) - by [@EArminjon](https://github.com/EArminjon))
+- **FEAT**: Add `iterable.segmented` knob, along with its `IterableSegmentedField`. ([#1678](https://github.com/widgetbook/widgetbook/pull/1678) - by [@EArminjon](https://github.com/EArminjon))
+
+## 3.18.0
+
+- **BREAKING**: Remove `next` library. ([#1634](https://github.com/widgetbook/widgetbook/pull/1634))
+
+## 3.17.1
+
+- **FIX**: Clamp `NumSliderField` value to avoid exceptions when the boundaries change. ([#1590](https://github.com/widgetbook/widgetbook/pull/1590) - by [@EArminjon](https://github.com/EArminjon))
+- **FIX**: Upscale `SemanticsAddon` to make it fill the entire viewport. ([#1611](https://github.com/widgetbook/widgetbook/pull/1611) - by [@EArminjon](https://github.com/EArminjon))
+- **REFACTOR**: Show selected state in `SemanticsAddon`. ([#1614](https://github.com/widgetbook/widgetbook/pull/1614) - by [@EArminjon](https://github.com/EArminjon))
+
+## 3.17.0
+
+- **FEAT**: Expose Widgetbook's own [scroll behavior](https://docs.widgetbook.io/configure/scroll-behavior) to allow customizing it. ([#1524](https://github.com/widgetbook/widgetbook/pull/1524) - by [@EArminjon](https://github.com/EArminjon))
 - **FIX**: Support Flutter 3.35.0. ([#1565](https://github.com/widgetbook/widgetbook/pull/1565))
+- **REFACTOR**: Deprecate `WidgetbookLeafComponent` in favor of `WidgetbookComponent` which will now have similar behavior when it has a single use-case. ([#1573](https://github.com/widgetbook/widgetbook/pull/1573))
+- **FIX**: Allow knobs to be re-registered. This makes it possible for a knob to mutate other knobs. ([#1578](https://github.com/widgetbook/widgetbook/pull/1578) - by [@EArminjon](https://github.com/EArminjon))
+- **FIX**: Allow nullable knobs first interaction, by introducing a `Field.defaultValue`, that will be used for setting the value when initial value is `null`. ([#1581](https://github.com/widgetbook/widgetbook/pull/1581) - by [@EArminjon](https://github.com/EArminjon))
+- **FIX**: Re-enable nullified knobs on change. ([#1586](https://github.com/widgetbook/widgetbook/pull/1586) - by [@EArminjon](https://github.com/EArminjon))
 
 ## 3.16.0
 

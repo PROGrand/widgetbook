@@ -14,14 +14,14 @@ class NumInputField<T extends num> extends Field<T> {
     required super.type,
     required this.formatters,
   }) : super(
+         defaultValue: (T == int ? 0 : 0.0) as T,
          codec: FieldCodec<T>(
            toParam: (value) => value.toString(),
-           toValue:
-               (param) =>
-                   (T == int
-                           ? int.tryParse(param ?? '')
-                           : double.tryParse(param ?? ''))
-                       as T?,
+           toValue: (param) =>
+               (T == int
+                       ? int.tryParse(param ?? '')
+                       : double.tryParse(param ?? ''))
+                   as T?,
          ),
        );
 
