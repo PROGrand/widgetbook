@@ -1,5 +1,16 @@
-## Unreleased
+## 3.24.0
 
+- **BREAKING**: Set minimum Flutter version to 3.44.0. ([#1924](https://github.com/widgetbook/widgetbook/pull/1924))
+
+## 3.23.0
+
+- **FEAT**: Add `defaultToNull` parameter to nullable knobs to make them start in a `null` _(i.e. unchecked)_ state while having a non-null initial value. ([#1790](https://github.com/widgetbook/widgetbook/pull/1790) - by [@youpelegrace](https://github.com/youpelegrace))
+- **REFACTOR**: Allow `inspector` 4.x. ([#1901](https://github.com/widgetbook/widgetbook/pull/1901))
+- **FEAT**: Add `headerPadding` parameter to customize the padding around the navigation panel header. ([#1882](https://github.com/widgetbook/widgetbook/pull/1882) - by [@EArminjon](https://github.com/EArminjon))
+
+## 3.22.0
+
+- **FIX**: Ensure slider label use max size ([#1823](https://github.com/widgetbook/widgetbook/pull/1823) - by [@EArminjon](https://github.com/EArminjon))
 - **BREAKING**: Set minimum SDK version to 3.10.0 & minimum Flutter version to 3.38.0. ([#1803](https://github.com/widgetbook/widgetbook/pull/1839))
 
 ## 3.21.0

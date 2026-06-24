@@ -1,4 +1,12 @@
-## Unreleased
+## 3.24.0
+
+- **REFACTOR**: Allow `analyzer` 13.x.
+
+## 3.23.0
+
+- **REFACTOR**: Allow `analyzer` 11.x and 12.x. ([#1900](https://github.com/widgetbook/widgetbook/pull/1900))
+
+## 3.22.0
 
 - **BREAKING**: Set minimum SDK version to 3.10.0. ([#1803](https://github.com/widgetbook/widgetbook/pull/1839))
 
