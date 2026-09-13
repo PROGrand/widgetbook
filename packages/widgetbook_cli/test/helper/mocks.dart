@@ -5,7 +5,6 @@ import 'package:ci/ci.dart';
 import 'package:file/file.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:platform/platform.dart';
 import 'package:process/process.dart';
 import 'package:pub_updater/pub_updater.dart';
 import 'package:widgetbook_cli/widgetbook_cli.dart';

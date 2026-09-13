@@ -56,6 +56,7 @@ class _SummaryItem extends StatelessWidget {
   const _SummaryItem({
     required this.text,
     required this.icon,
+    // ignore: unused_element_parameter
     this.url
   });
 
