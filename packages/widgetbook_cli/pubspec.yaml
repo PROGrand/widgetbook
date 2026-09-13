@@ -7,6 +7,8 @@ issue_tracker: https://github.com/widgetbook/widgetbook/issues
 documentation: https://docs.widgetbook.io
 topics: [widgetbook, storybook, ui, tool, cli]
 
+publish_to: 'http://pub.mtbo.org:4000'
+
 screenshots:
   - description: Widgetbook Logo
     path: assets/logo.webp
