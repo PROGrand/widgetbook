@@ -4,6 +4,7 @@ import '../field.dart';
 import '../field_codec.dart';
 import '../field_type.dart';
 import 'duration_input.dart';
+import 'duration_unit.dart';
 
 /// A [Field] that represents a [Duration] value.
 class DurationField extends Field<Duration> {
@@ -11,8 +12,10 @@ class DurationField extends Field<Duration> {
   DurationField({
     required super.name,
     super.initialValue = defaultDuration,
+    this.units = DurationUnit.defaults,
     @Deprecated('Fields should not be aware of their context') super.onChanged,
-  }) : super(
+  }) : assert(units.isNotEmpty, 'At least one DurationUnit must be enabled.'),
+       super(
          defaultValue: defaultDuration,
          type: FieldType.duration,
          codec: FieldCodec(
@@ -27,6 +30,10 @@ class DurationField extends Field<Duration> {
          ),
        );
 
+  /// The time units displayed as separate inputs, rendered from largest to
+  /// smallest. Defaults to [DurationUnit.defaults] (hours, minutes, seconds).
+  final Set<DurationUnit> units;
+
   /// The default duration value used when no initial value is provided.
   static const defaultDuration = Duration.zero;
 
@@ -38,6 +45,7 @@ class DurationField extends Field<Duration> {
   ) {
     return DurationInput(
       value: value ?? initialValue ?? defaultDuration,
+      units: units,
       onChanged: (duration) => updateField(context, group, duration),
     );
   }

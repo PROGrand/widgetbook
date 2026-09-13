@@ -8,6 +8,7 @@ class DurationKnob extends Knob<Duration?> {
   DurationKnob({
     required super.label,
     required super.initialValue,
+    this.units = DurationUnit.defaults,
     super.description,
   });
 
@@ -16,7 +17,12 @@ class DurationKnob extends Knob<Duration?> {
     required super.initialValue,
     super.description,
     super.defaultToNull,
+    this.units = DurationUnit.defaults,
   }) : super(isNullable: true);
+
+  /// The time units displayed as separate inputs, rendered from largest to
+  /// smallest. Defaults to [DurationUnit.defaults] (hours, minutes, seconds).
+  final Set<DurationUnit> units;
 
   @override
   List<Field> get fields {
@@ -24,6 +30,7 @@ class DurationKnob extends Knob<Duration?> {
       DurationField(
         name: label,
         initialValue: initialValue,
+        units: units,
       ),
     ];
   }

@@ -221,12 +221,14 @@ class KnobsBuilder {
     required String label,
     Duration initialValue = Duration.zero,
     String? description,
+    Set<DurationUnit> units = DurationUnit.defaults,
   }) {
     return onKnobAdded(
       DurationKnob(
         label: label,
         initialValue: initialValue,
         description: description,
+        units: units,
       ),
     )!;
   }
@@ -238,6 +240,7 @@ class KnobsBuilder {
     Duration? initialValue,
     String? description,
     bool defaultToNull = false,
+    Set<DurationUnit> units = DurationUnit.defaults,
   }) {
     return onKnobAdded(
       DurationKnob.nullable(
@@ -245,6 +248,7 @@ class KnobsBuilder {
         initialValue: initialValue,
         description: description,
         defaultToNull: defaultToNull,
+        units: units,
       ),
     );
   }
