@@ -56,7 +56,6 @@ class _SummaryItem extends StatelessWidget {
   const _SummaryItem({
     required this.text,
     required this.icon,
-    this.url,
   });
 
   final String text;
@@ -65,7 +64,7 @@ class _SummaryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isClickable = url != null;
+    final isClickable = false;
 
     return GestureDetector(
       onTap: isClickable ? () => launchUrl(Uri.parse(url!)) : null,
