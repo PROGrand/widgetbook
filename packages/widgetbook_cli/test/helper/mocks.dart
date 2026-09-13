@@ -50,7 +50,7 @@ class MockCiManager extends Mock implements CiManager {
   }
 }
 
-class MockPlatform extends Mock implements Platform {}
+// class MockPlatform extends Mock implements Platform {}
 
 class MockCacheReader extends Mock implements CacheReader {}
 

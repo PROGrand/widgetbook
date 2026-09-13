@@ -1,3 +1,7 @@
+## 3.25.1
+
+- merged with upstream
+
 ## 3.11.0
 
 - **BREAKING**: Set minimum SDK version to 3.10.0. ([#1803](https://github.com/widgetbook/widgetbook/pull/1839))

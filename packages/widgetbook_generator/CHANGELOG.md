@@ -1,3 +1,7 @@
+## 3.25.1
+
+- merged with upstream
+
 ## 3.24.0
 
 - **REFACTOR**: Allow `analyzer` 13.x.
